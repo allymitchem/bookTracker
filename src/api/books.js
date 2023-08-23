@@ -11,10 +11,10 @@ export async function getBook(searchString) {
 
     try {
         const response = await fetch(url+`search.json?title=${searchString}`, reqObj)
-        console.log(url)
         const result = await response.json()
-        console.log("Did it make it here")
+        console.log("from api function", result)
         return result
     } catch (error) {
+        console.error(error)
     }
 }

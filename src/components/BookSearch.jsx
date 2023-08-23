@@ -1,43 +1,39 @@
-import React, {useState} from "react"
+import React, { useState } from "react"
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
 import { getBook } from "../api/books"
 
-const BookSearch = ({list}) => {
+const BookSearch = () => {
     const [searchString, setSearchString] = useState("")
+    const [searchResults, setSearchResults] = useState([])
 
-    // function handleSearch(book, text) {
-
-    //    console.log("hello")
-    //     return data
-    // }
-    async function handleSearch() {
-        await getBook(searchString.toLowerCase())
-
+    async function handleSearch(event) {
+        event.preventDefault();
+        console.log("Did this work")
+       const books = await getBook(searchString.toLowerCase())
+        setSearchResults(books.docs)
     }
-
-handleSearch()
+    console.log("At this point the results are correct", searchResults)
+ 
+    console.log(searchResults.length)
 
     return (
         <>
             <div id="bookSearch">
                 <h2>Search me</h2>
             </div>
-            <input
-                type="search"
+            <form>
+                <input
+                type="text"
                 placeholder=" 🔍 Search by Title or Author"
                 value={searchString}
                 onChange={(e) => setSearchString(e.target.value)}
-            />
-            {/* {searchString.length ? 
-            <div className="display_books">
-                    {booksToDisplay.length &&
-                        booksToDisplay.map((elem) => console.log("it has length")
-                    //     <p> { elem.title }
-                    // })}</p><img className="book_image" src={elem.cover_edition_key}></img>           :
-            )}
-            </div>
-            :null} */}
-
+                />
+                <button value="Search" onClick={handleSearch}>            
+                </button>                
+            </form>
+                <div className="display_books">
+                    {searchResults.length >=1 && searchResults.map((elem) => <p key={`book_${elem.key}`}>{elem.title}</p>)}
+                </div>
         </>
     )
 }
